@@ -10,6 +10,8 @@ import { drizzleClient } from '#/shared/drizzle-client'
 import { videoLikes } from '#/video/video.schema'
 import { schema } from './graphql/schema'
 import { DataLoaders } from './graphql/shared/data-loaders'
+import { join } from 'node:path';
+import { createReadStream, existsSync } from 'node:fs';
 
 /**
  * Builds a per-request loader for `Video.likedByMe`, batched by video id.
@@ -93,10 +95,22 @@ export const yoga = createYoga({
 	}),
 })
 
-const server = createServer(yoga)
+const server = createServer((req, res) => {
+  // 1. If it's a GraphQL request, pass to Yoga
+  if (req.url?.startsWith('/graphql')) {
+    return yoga(req, res);
+  }
 
-if (process.env.NODE_ENV !== 'test') {
-	server.listen(4000, () => {
-		console.info('Server is running on http://localhost:4000/graphql')
-	})
-}
+  // 2. Serve static files from the 'public' directory
+  const filePath = join(__dirname, 'public', req.url === '/' ? 'index.html' : req.url!);
+  
+  if (existsSync(filePath)) {
+    // Basic static file server logic
+    res.writeHead(200);
+    createReadStream(filePath).pipe(res);
+  } else {
+    // 3. SPA Fallback: Always serve index.html for unknown routes
+    res.writeHead(200, { 'Content-Type': 'text/html' });
+    createReadStream(join(__dirname, 'public', 'index.html')).pipe(res);
+  }
+});

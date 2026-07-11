@@ -1,0 +1,54 @@
+# File scalar for multipart uploads. GraphQL Yoga resolves this to a WHATWG
+# File/Blob instance at runtime (graphql-scalars does not provide it).
+scalar File
+
+type Video {
+	id: ID!
+	description: String
+	url: String!
+	thumbnailUrl: String
+	likes: Int!
+	likedByMe: Boolean!
+	createdAt: DateTimeISO!
+	creator: User!
+}
+
+type PageInfo {
+	endCursor: String
+	hasNextPage: Boolean!
+}
+
+type VideoEdge {
+	cursor: String!
+	node: Video!
+}
+
+type VideoConnection {
+	edges: [VideoEdge!]!
+	pageInfo: PageInfo!
+}
+
+input VideoFilters {
+	userId: ID
+}
+
+extend type Query {
+	videos(first: Int, after: String, filters: VideoFilters): VideoConnection!
+		@auth
+	video(id: ID!): Video! @auth
+	user(id: ID!): User! @auth
+}
+
+# Root Mutation/Subscription are first declared here (no base type in the
+# scaffold). Other contexts add fields with `extend type Mutation`.
+type Mutation {
+	upload(file: File!): String! @auth
+	publishVideo(url: String!, description: String, thumbnailUrl: String): Video!
+		@auth
+	likeVideo(videoId: ID!): Video! @auth
+	unlikeVideo(videoId: ID!): Video! @auth
+}
+
+type Subscription {
+	videos: Video! @auth
+}

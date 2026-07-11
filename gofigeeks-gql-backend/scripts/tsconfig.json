@@ -1,0 +1,15 @@
+{
+	"compilerOptions": {
+		"types": [
+			"node"
+		],
+		"paths": {
+			"@/*": [
+				"../src/app/*"
+			],
+			"#/*": [
+				"../src/contexts/*"
+			]
+		}
+	},
+}

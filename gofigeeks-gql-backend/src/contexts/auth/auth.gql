@@ -1,0 +1,14 @@
+type Session {
+	user: User!
+}
+
+extend type Query {
+	# Current session (null when not authenticated). Not protected by @auth so
+	# the frontend can check login state on load.
+	session: Session
+}
+
+extend type Mutation {
+	signIn(email: String!, password: String!): Session!
+	signOut: Boolean!
+}

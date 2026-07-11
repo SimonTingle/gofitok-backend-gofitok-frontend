@@ -1,0 +1,11 @@
+# src/contexts/auth/auth.schema.ts
+
+type User {
+	id: String!
+	email: String!
+	name: String!
+	emailVerified: Boolean!
+	image: String
+	biography: String
+	createdAt: DateTimeISO!
+}

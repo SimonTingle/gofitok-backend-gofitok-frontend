@@ -1,0 +1,56 @@
+{
+  "version": "1.0.0",
+  "type": "module",
+  "main": "index.js",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "dev": "tsx watch src/app",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "start:prod": "tsx src/app",
+    "migrate:start": "run-s drizzle:migrate start:prod",
+    "db:generate": "run-s auth:generate drizzle:generate",
+    "db:migrate": "run-s drizzle:migrate",
+    "db:seed": "tsx scripts/seed-db.ts",
+    "auth:generate": "run-s better-auth:**",
+    "better-auth:generate": "npx auth generate --yes --config src/contexts/shared/auth.ts --output src/contexts/auth/auth.schema.ts",
+    "better-auth:format": "npx prettier --write src/contexts/auth/auth.schema.ts",
+    "drizzle:generate": "npx drizzle-kit generate",
+    "drizzle:migrate": "npx drizzle-kit migrate",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "3.700.0",
+    "@graphql-tools/load-files": "7.0.1",
+    "@graphql-tools/schema": "10.0.33",
+    "@graphql-tools/utils": "11.1.0",
+    "@graphql-yoga/render-apollo-sandbox": "0.7.2",
+    "better-auth": "1.6.19",
+    "dataloader": "2.2.3",
+    "drizzle-orm": "0.45.2",
+    "drizzle-seed": "0.3.1",
+    "graphql": "16.14.2",
+    "graphql-scalars": "1.25.0",
+    "graphql-yoga": "5.21.2",
+    "postgres": "3.4.9",
+    "vite": "8.0.16"
+  },
+  "devDependencies": {
+    "@graphql-tools/executor-http": "3.3.0",
+    "@types/node": "25.9.4",
+    "@typescript-eslint/eslint-plugin": "8.61.1",
+    "@typescript-eslint/parser": "8.61.1",
+    "auth": "1.6.18",
+    "drizzle-kit": "0.31.10",
+    "eslint": "8.57.1",
+    "eslint-config-prettier": "10.1.8",
+    "eslint-config-standard": "17.1.0",
+    "npm-run-all": "4.1.5",
+    "prettier": "3.8.4",
+    "tsx": "4.22.4",
+    "typescript": "6.0.3",
+    "vitest": "4.1.9"
+  }
+}

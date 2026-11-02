@@ -27,7 +27,7 @@
     "@graphql-tools/schema": "10.0.33",
     "@graphql-tools/utils": "11.1.0",
     "@graphql-yoga/render-apollo-sandbox": "0.7.2",
-    "better-auth": "1.6.19",
+    "better-auth": "1.7.7",
     "dataloader": "2.2.3",
     "drizzle-orm": "0.45.2",
     "drizzle-seed": "0.3.1",
